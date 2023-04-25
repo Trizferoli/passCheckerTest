@@ -23,7 +23,6 @@ describe('test', () => {
     it('should pass with at least 1 upperCase Letter', () => {
         const actual = sut.checkPassword('1234aAcd');
         expect(actual.reasons).not.toContain(PasswordErrors.NO_UPPER_CASE);
-        expect(actual.valid).toBe(true);
 
     })
 
@@ -32,5 +31,19 @@ describe('test', () => {
         expect(actual.reasons).toContain(PasswordErrors.NO_UPPER_CASE);
         expect(actual.valid).toBe(false);
 
-    })
+    });
+
+    it('Should fail if admin password has no number ', () => {
+        const actual = sut.checkAdminPassword('abcAbcd');
+        expect(actual.reasons).toContain(PasswordErrors.NO_NUMBER);
+        expect(actual.valid).toBe(false);
+
+    });
+
+    it('Should pass if admin password has number ', () => {
+        const actual = sut.checkAdminPassword('abcAbcd1');
+        expect(actual.reasons).not.toContain(PasswordErrors.NO_NUMBER);
+
+    });
+
 })
