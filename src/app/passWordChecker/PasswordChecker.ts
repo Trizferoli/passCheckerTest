@@ -11,19 +11,31 @@ export interface ChecResult {
 export class passChecker {
     public checkPassword(password: string): ChecResult {
         const reasons: PasswordErrors[] = []
-        if (password.length < 8) {
-            reasons.push(PasswordErrors.SHORT);
-        }
-
-        if (password == password.toLowerCase()) {
-            reasons.push(PasswordErrors.NO_UPPER_CASE);
-        }
-        if (password == password.toUpperCase()) {
-            reasons.push(PasswordErrors.NO_LOWER_CASE);
-        }
+        this.checkForLength(password, reasons);
+        this.checkForLowerCase(password, reasons);
+        this.checkForUpperCase(password, reasons);
         return {
             valid: reasons.length > 0 ? false : true,
             reasons
         };
     }
+
+    private checkForLength(password: string, reasons: PasswordErrors[]) {
+        if (password.length < 8) {
+            reasons.push(PasswordErrors.SHORT);
+        }
+    }
+
+    private checkForUpperCase(password: string, reasons: PasswordErrors[]) {
+        if (password == password.toUpperCase()) {
+            reasons.push(PasswordErrors.NO_LOWER_CASE);
+        }
+    }
+
+    private checkForLowerCase(password: string, reasons: PasswordErrors[]) {
+        if (password == password.toLowerCase()) {
+            reasons.push(PasswordErrors.NO_UPPER_CASE);
+        }
+    }
+
 }
